@@ -83,16 +83,29 @@
 
     // Gestion de l'enregistrement local
     const form = document.getElementById("suiviForm");
-    form.addEventListener("submit", function(event) {
+   form.addEventListener("submit", function(event) {
       event.preventDefault();
       const data = new FormData(form);
       const obj = {};
       data.forEach((value, key) => obj[key] = value);
-      console.log("Entrée enregistrée :", obj);
-      document.getElementById("confirmation").style.display = "block";
-      form.reset();
-      document.getElementById("date").value = new Date().toISOString().split('T')[0];
-    });
+
+  fetch("https://script.google.com/macros/s/AKfycbyF2SbsxZn6-g3hkQHhxv-9dYJSwl2vBcbcoAKXT6bB5U1Y5UYZgoq2QI9pxtuq-5MU/exec", {
+    method: "POST",
+    body: JSON.stringify(obj),
+    headers: { "Content-Type": "application/json" }
+  })
+  .then(response => response.json())
+  .then(result => {
+    console.log("Réponse Google Sheet :", result);
+    document.getElementById("confirmation").style.display = "block";
+    form.reset();
+    document.getElementById("date").value = new Date().toISOString().split('T')[0];
+  })
+  .catch(error => {
+    alert("Erreur lors de l'envoi des données : " + error);
+  });
+});
+
   </script>
 </body>
 </html>
