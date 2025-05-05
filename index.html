@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Suivi Hypertension IC</title>
+  <link rel="apple-touch-icon" href="https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/LetterH.svg/1024px-LetterH.svg.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; background: #f0f0f0; }
+    form { background: #fff; padding: 20px; border-radius: 12px; max-width: 800px; margin: auto; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    label { display: block; margin-top: 12px; font-weight: bold; }
+    input, textarea { width: 100%; padding: 8px; margin-top: 4px; border-radius: 6px; border: 1px solid #ccc; box-sizing: border-box; }
+    button { margin-top: 20px; padding: 10px 20px; background-color: #2a7de1; color: white; border: none; border-radius: 6px; cursor: pointer; }
+    button:hover { background-color: #1d5cb0; }
+    #confirmation { margin-top: 20px; color: green; font-weight: bold; display: none; }
+  </style>
+</head>
+<body>
+  <form id="suiviForm">
+    <h2>Fiche de suivi - Hypertension intracrânienne</h2>
+    <label for="date">Date</label>
+    <input type="date" id="date" name="date" required>
+
+    <label for="startPain">Heure début douleur</label>
+    <input type="time" id="startPain" name="startPain">
+
+    <label for="endPain">Heure fin douleur</label>
+    <input type="time" id="endPain" name="endPain">
+
+    <label for="intensity">Intensité (0-10)</label>
+    <input type="number" id="intensity" name="intensity" min="0" max="10">
+
+    <label for="painType">Type de douleur</label>
+    <input type="text" id="painType" name="painType">
+
+    <label for="painLocation">Localisation de la douleur</label>
+    <input type="text" id="painLocation" name="painLocation">
+
+    <label for="sleep">Sommeil (heures, interruptions)</label>
+    <textarea id="sleep" name="sleep"></textarea>
+
+    <label for="food">Alimentation</label>
+    <textarea id="food" name="food"></textarea>
+
+    <label for="activity">Activité physique</label>
+    <textarea id="activity" name="activity"></textarea>
+
+    <label for="emotions">Émotions / stress</label>
+    <textarea id="emotions" name="emotions"></textarea>
+
+    <label for="screen">Temps d'écran</label>
+    <textarea id="screen" name="screen"></textarea>
+
+    <label for="light">Exposition à la lumière</label>
+    <textarea id="light" name="light"></textarea>
+
+    <label for="position">Position corporelle</label>
+    <textarea id="position" name="position"></textarea>
+
+    <label for="meds">Médicaments / Compléments</label>
+    <textarea id="meds" name="meds"></textarea>
+
+    <label for="weather">Conditions météo</label>
+    <textarea id="weather" name="weather"></textarea>
+
+    <label for="altitude">Altitude / Voyage</label>
+    <textarea id="altitude" name="altitude"></textarea>
+
+    <label for="event">Événements particuliers</label>
+    <textarea id="event" name="event"></textarea>
+
+    <button type="submit">Enregistrer</button>
+    <div id="confirmation">✅ Données enregistrées localement.</div>
+  </form>
+
+  <script>
+    const form = document.getElementById("suiviForm");
+    form.addEventListener("submit", function(event) {
+      event.preventDefault();
+      const data = new FormData(form);
+      const obj = {};
+      data.forEach((value, key) => obj[key] = value);
+      console.log("Entrée enregistrée :", obj);
+      document.getElementById("confirmation").style.display = "block";
+      form.reset();
+    });
+  </script>
+</body>
+</html>
