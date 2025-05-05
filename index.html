@@ -18,7 +18,7 @@
 </head>
 <body>
   <form id="suiviForm">
-    <h2>Fiche de suivi - Hypertension Intracrânienne</h2>
+    <h2>Fiche de suivi - Hypertension intracrânienne</h2>
     <label for="date">Date</label>
     <input type="date" id="date" name="date" required>
 
@@ -71,41 +71,48 @@
     <textarea id="event" name="event"></textarea>
 
     <button type="submit">Enregistrer</button>
-    <div id="confirmation">✅ Données enregistrées localement.</div>
+    <div id="confirmation">✅ Données enregistrées dans Google Sheet.</div>
   </form>
 
   <script>
-    // Remplir automatiquement la date du jour
     document.addEventListener("DOMContentLoaded", () => {
       const today = new Date().toISOString().split('T')[0];
       document.getElementById("date").value = today;
     });
 
-    // Gestion de l'enregistrement local
     const form = document.getElementById("suiviForm");
-   form.addEventListener("submit", function(event) {
+    form.addEventListener("submit", function(event) {
       event.preventDefault();
       const data = new FormData(form);
       const obj = {};
       data.forEach((value, key) => obj[key] = value);
 
-  fetch("https://script.google.com/macros/s/AKfycbyF2SbsxZn6-g3hkQHhxv-9dYJSwl2vBcbcoAKXT6bB5U1Y5UYZgoq2QI9pxtuq-5MU/exec", {
-    method: "POST",
-    body: JSON.stringify(obj),
-    headers: { "Content-Type": "application/json" }
-  })
-  .then(response => response.json())
-  .then(result => {
-    console.log("Réponse Google Sheet :", result);
-    document.getElementById("confirmation").style.display = "block";
-    form.reset();
-    document.getElementById("date").value = new Date().toISOString().split('T')[0];
-  })
-  .catch(error => {
-    alert("Erreur lors de l'envoi des données : " + error);
-  });
-});
-
+      fetch("TON_URL_GOOGLE_APPS_SCRIPT", {
+        method: "POST",
+        body: JSON.stringify(obj),
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error("Erreur réseau");
+        }
+        return response.json();
+      })
+      .then(result => {
+        if (result.status === 'success') {
+          document.getElementById("confirmation").style.display = "block";
+          form.reset();
+          document.getElementById("date").value = new Date().toISOString().split('T')[0];
+        } else {
+          alert("Erreur lors de l'enregistrement : " + JSON.stringify(result));
+        }
+      })
+      .catch(error => {
+        alert("Erreur : " + error.message);
+      });
+    });
   </script>
 </body>
 </html>
