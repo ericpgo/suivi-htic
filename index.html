@@ -75,6 +75,13 @@
   </form>
 
   <script>
+    // Remplir automatiquement la date du jour
+    document.addEventListener("DOMContentLoaded", () => {
+      const today = new Date().toISOString().split('T')[0];
+      document.getElementById("date").value = today;
+    });
+
+    // Gestion de l'enregistrement local
     const form = document.getElementById("suiviForm");
     form.addEventListener("submit", function(event) {
       event.preventDefault();
@@ -84,6 +91,7 @@
       console.log("Entrée enregistrée :", obj);
       document.getElementById("confirmation").style.display = "block";
       form.reset();
+      document.getElementById("date").value = new Date().toISOString().split('T')[0];
     });
   </script>
 </body>
